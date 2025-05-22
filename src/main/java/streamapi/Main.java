@@ -2,6 +2,7 @@ package streamapi;
 
 import java.io.InputStream;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /** Starter for the stream api task. */
 public class Main {
@@ -53,16 +54,25 @@ public class Main {
      */
     public static Set<Integer> ifmCps(List<Student> studentList) {
         // TODO
-        Set<Integer> result = new HashSet<>();
-        Integer i = 0;
-        for (Student v : studentList) {
-            if (v.isIFM()) {
-                i = v.cps();
-                result.add(i);
-            }
-        }
+//        Set<Integer> result = new HashSet<>();
+//        Integer i = 0;
+//        for (Student v : studentList) {
+//            if (v.isIFM()) {
+//                i = v.cps();
+//                result.add(i);
+//            }
+//        }
 
-        return result;
+        // Was bedeutet die Menge der gesammelten ECTS”,was ist die Mengen-Eigenschaft?
+        // Die ECTS Punkte der Informatik Studierenden sollen in einem Set<integer> gespeichert werden
+
+        return studentList.stream()
+            // filters all computer science students out
+            .filter(Student::isIFM)
+            // transforms every element to a other form
+            .map(Student::cps)
+            // collects the elements to a set Object
+            .collect(Collectors.toSet());
     }
 
     /**
