@@ -1,7 +1,11 @@
 package streamapi;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /** Starter for the stream api task. */
 public class Main {
@@ -19,7 +23,7 @@ public class Main {
         // Task III: Random
 
         // Task IV+V: Resources
-
+        System.out.println(resources("file.txt"));
     }
 
     /**
@@ -71,7 +75,18 @@ public class Main {
      */
     private static InputStream getResourceAsStream(String path) {
         // TODO
-        throw new UnsupportedOperationException();
+        // Welcher Ordner wurde in der vorgegebenen Gradle-Konfiguration als Ressourcen-Ordner für das Projekt definiert?
+        // Es wurde kein neuer / zusätzlicher Ressourcen-Ordner konfiguriert, dementsprechend verwendet Gradle den Standard Ordner src/main/resources.
+        // Aber die Source-Ordner wurden manuell konfiguriert.
+
+        // the stream holding the file content
+        // Path structure: /folder name within resources/dateiname.txt
+        InputStream inputStream = Main.class.getResourceAsStream(path);
+        if(inputStream == null) {
+            System.out.println("Leerer inputStream!");
+        }
+        return inputStream;
+        //throw new UnsupportedOperationException();
     }
 
     /**
@@ -86,6 +101,40 @@ public class Main {
      */
     public static String resources(String path) {
         // TODO
-        throw new UnsupportedOperationException();
+//      StringBuilder result = new StringBuilder();
+        String result = "";
+        try (InputStream stream = getResourceAsStream(path)) {
+//            BufferedReader r = new BufferedReader(new InputStreamReader(stream));
+//
+//            List<String> allLines = new ArrayList<>();
+//
+//            String newLine = r.readLine();
+//            while (newLine != null) {
+//                allLines.add(newLine);
+//                newLine = r.readLine();
+//            }
+//
+//            for (int i = 1; i < allLines.size(); i++) {
+//                String s = allLines.get(i);
+//                if (s.startsWith("a") && !(s.length() < 2)) {
+//                    result.append(allLines.get(i)).append("\n");
+//                }
+//            }
+
+            result = new BufferedReader(new InputStreamReader(stream))
+                // reads every line of the file and converts bytes to strings
+                // outputs a String Stream where each line is a element
+                .lines()
+                // filters after the given condition
+                .filter((s)-> s.startsWith("a") && !(s.length() < 2))
+                // adds all string elements to one string but separated with \n
+                .collect(Collectors.joining("\n"));
+
+        } catch (IOException e) {
+            System.err.println("Ouch, that didn't work: \n" + e.getMessage());
+        }
+
+//      return result.toString();
+        return result;
     }
 }
