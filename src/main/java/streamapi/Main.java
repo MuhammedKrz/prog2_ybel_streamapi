@@ -1,7 +1,11 @@
 package streamapi;
 
+import java.awt.*;
 import java.io.InputStream;
 import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /** Starter for the stream api task. */
 public class Main {
@@ -60,19 +64,32 @@ public class Main {
         Random r = new Random();
 
         // TODO
-        List<Integer> randomIntegers = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            randomIntegers.add(r.nextInt(10));
-        }
+//        List<Integer> randomIntegers = new ArrayList<>();
+//        for (int i = 0; i < 10; i++) {
+//            randomIntegers.add(r.nextInt(10));
+//        }
 
-        List<Integer> returnList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            if (randomIntegers.get(i) % 2 == 0) {
-                returnList.add(randomIntegers.get(i) * randomIntegers.get(i));
-            }
-        }
+        // generate Integer values with Stream.generate
+        List<Integer> randomIntegers = Stream.generate( () -> r.nextInt(10))
+            // generate 10 random integer values
+            .limit(10)
+            // collect and cast to list
+            .toList();
 
-        return returnList;
+//        List<Integer> returnList = new ArrayList<>();
+//        for (int i = 0; i < 10; i++) {
+//            if (randomIntegers.get(i) % 2 == 0) {
+//                returnList.add(randomIntegers.get(i) * randomIntegers.get(i));
+//            }
+//        }
+
+        return randomIntegers.stream()
+            // filters all even numbers
+            .filter((i) -> (i % 2 == 0))
+            // multiplied by itself
+            .map((i) -> i*i)
+            // collect and cast to list
+            .toList();
     }
 
     /**
