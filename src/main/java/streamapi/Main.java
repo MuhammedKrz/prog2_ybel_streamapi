@@ -22,6 +22,7 @@ public class Main {
                                 new Student("D", 45, Enrollment.ARCH),
                                 new Student("E", 80, Enrollment.IFM))));
 
+
         // Task II: Set of ECTS of all IFM students
 
         // Task III: Random
@@ -40,12 +41,15 @@ public class Main {
      */
     public static Integer students(List<Student> studentList) {
         // TODO
-        Integer sum = 0;
-        for (Student s : studentList) {
-            sum += s.cps();
-        }
-
-        return sum;
+//        Integer sum = 0;
+//        for (Student s : studentList) {
+//            sum += s.cps();
+//        }
+        return studentList.stream()
+            // transform every element within the stream in an Integer
+            .mapToInt(Student::cps)
+            // iterates through all elements of the Int Steam and outputs the sum of the Integer values
+            .sum();
     }
 
     /**
